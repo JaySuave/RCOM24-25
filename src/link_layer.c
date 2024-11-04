@@ -423,7 +423,7 @@ int llwrite(const unsigned char *packet, int bufSize)
                     printf(YELLOW "Artificial error injected into DATA frame.%s\n", RESET);
                     
                     // Send frame using writeBytesSerialPort
-                    writeBytesSerialPort(buf_copy, bufpos);
+                    bytes_written = writeBytesSerialPort(buf_copy, bufpos);
                     if (bytes_written < 0)
                     {
                         perror("writeBytesSerialPort failed");
@@ -1107,4 +1107,7 @@ int llclose(int showStatistics)
 
         return 1; // Disconnection successful
     }
+
+    return 0;
 }
+

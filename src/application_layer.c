@@ -188,7 +188,7 @@ void applicationLayer(const char *serialPort, const char *role, int baudRate, in
     int res;
 
     // printf("role: %d", linklayerrole);
-    printf(GREEN "[Info] Link Layer opened with role: %d%s\n", linklayerrole, RESET);
+    printf(CYAN "[Info] Link Layer opened with role: %d%s\n", linklayerrole, RESET);
 
     if (linklayerrole == LlTx) {
         int file_size = 0;
@@ -205,12 +205,12 @@ void applicationLayer(const char *serialPort, const char *role, int baudRate, in
         fseek(file_pointer, 0, SEEK_SET);
 
         // printf("File size: %d\n", file_size);
-        printf(GREEN "[Info] File size: %d bytes%s\n", file_size, RESET);
+        printf(CYAN "[Info] File size: %d bytes%s\n", file_size, RESET);
 
         struct packet p = setupControlPacket(file_size, START);
         // printf("p.size: %d\n", p.size);
         // for (int i = 0; i < p.size; i++) printf("%x ", p.packet[i]);
-        printf(GREEN "[Info] Sending START control packet.%s\n", RESET);
+        printf(CYAN "[Info] Sending START control packet.%s\n", RESET);
         llwrite(p.packet, p.size);
         free(p.packet); // Free allocated memory
 
@@ -237,11 +237,11 @@ void applicationLayer(const char *serialPort, const char *role, int baudRate, in
         fclose(file_pointer);
 
         p = setupControlPacket(file_size, END);
-        printf(GREEN "[Info] Sending END control packet.%s\n", RESET);
+        printf(CYAN "[Info] Sending END control packet.%s\n", RESET);
         llwrite(p.packet, p.size);
         free(p.packet); // Free allocated memory
 
-        if (llclose(0) == 1) {
+        if (llclose(0) != -1) {
             printf(GREEN "Done.\n%s", RESET);
         } else {
             printf(RED "Error closing connection.\n%s", RESET);
@@ -316,17 +316,12 @@ void applicationLayer(const char *serialPort, const char *role, int baudRate, in
         timeTaken = (tf.tv_sec - ti.tv_sec) * 1e6; // s to us
         timeTaken = (timeTaken + (tf.tv_usec - ti.tv_usec)) / 1e6; // us to s
 
-        printf("\n\t\t\t**** STATISTICS ****\n\n");
-        printf("\t\tNumber of bits read = %d\n", bits_received);
-        printf("\t\tTime it took to send the file =  %fs\n", timeTaken);
+        printf(CYAN "\n**** STATISTICS ****\n\n");
+        printf(CYAN "Number of bits read = %d\n", bits_received);
+        printf(CYAN "Time it took to send the file =  %fs\n", timeTaken);
+        printf(CYAN "\n********************\n\n");
 
-        double R = bits_received / timeTaken;
-        double S = R / baudRate;
-
-        printf("\t\tBaudrate = %lf\n", R);
-        printf("\t\tS = %lf\n\n", S);
-
-        if (llclose(0) == 1) {
+        if (llclose(0) != -1) {
             printf(GREEN "Done.\n%s", RESET);
         } else {
             printf(RED "Error closing connection%s\n", RESET);
