@@ -161,6 +161,8 @@ int llopen(LinkLayer link_layer)
                 // Wait cycle
                 while (state != OPEN_STOP && alarmEnabled == TRUE)
                 {
+                    usleep(PROPAGATION_DELAY);
+                    
                     // Read a byte using readByteSerialPort instead of read
                     int bytesRead = readByteSerialPort(&readChar);
                     if (bytesRead == -1)
@@ -315,7 +317,7 @@ int llopen(LinkLayer link_layer)
 
         // Send UA response
         unsigned char ua_response[5] = { FLAG, A_Tx, UA, (A_Tx ^ UA), FLAG };
-
+        
         if (writeBytesSerialPort(ua_response, 5) < 0) // Send only 5 bytes
         {
             perror("writeBytesSerialPort failed");
@@ -422,6 +424,7 @@ int llwrite(const unsigned char *packet, int bufSize)
                     corrupt_frame(buf_copy, bufpos); // Corrupt the DATA frame
                     printf(YELLOW "Artificial error injected into DATA frame.%s\n", RESET);
                     
+                    
                     // Send frame using writeBytesSerialPort
                     bytes_written = writeBytesSerialPort(buf_copy, bufpos);
                     if (bytes_written < 0)
@@ -438,6 +441,8 @@ int llwrite(const unsigned char *packet, int bufSize)
                         return -1;
                     }
                 }
+
+                usleep(PROPAGATION_DELAY);
 
                 // Print sent I-frame
                 printf(GREEN "[Sent] [DATA] Tx -> Rx, Seq: %d%s\n", frame_to_send, RESET);

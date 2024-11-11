@@ -29,7 +29,7 @@ enum PacketsControlField
     
 };
 #define BUF_SIZE 5 //{F,A,C,BCC1,F}
-#define DATA_BLOCK_SIZE 250 
+#define DATA_BLOCK_SIZE 200
 #define IBUF_SIZE ((2 * DATA_BLOCK_SIZE) + 6) //data block + control info
 #define TRANSMITTER_READ_BUFF_SIZE 5
 #define PACKET_SIZE (4 * DATA_BLOCK_SIZE)  //max payload
@@ -38,7 +38,9 @@ enum PacketsControlField
 #define KMS 10000
 #define T_PROP_PER_KM 5 //us - 5 microseconds per km ? check this
 
-#define PROBABILITY_ERROR 5 //percentage of error probability
+#define PROPAGATION_DELAY 0
+
+#define PROBABILITY_ERROR 0 //percentage of error probability
 
 
 #endif // CONSTANTS_H

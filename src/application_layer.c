@@ -319,6 +319,12 @@ void applicationLayer(const char *serialPort, const char *role, int baudRate, in
         printf(CYAN "\n**** STATISTICS ****\n\n");
         printf(CYAN "Number of bits read = %d\n", bits_received);
         printf(CYAN "Time it took to send the file =  %fs\n", timeTaken);
+
+        double R = bits_received / timeTaken;
+        double S = R / baudRate;
+
+        printf(CYAN "Baudrate = %lf\n", R);
+        printf(CYAN "S = %lf\n\n", S);
         printf(CYAN "\n********************\n\n");
 
         if (llclose(0) != -1) {
